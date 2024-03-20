@@ -13,9 +13,11 @@ const App = () => {
         </div>)
 }
 
+/*
 function Pizza2() {
     return <h2>Pizza2</h2>
 }
+*/
 
 const Header = () => {
 
@@ -38,13 +40,38 @@ const Menu = () => {
                     {pizzas.map((pizza, index) => (
                         <Pizza key={pizza.name} num={index} />
                     ))}
-                </ul>) : null
-            }
+                </ul>) : null}
         </div>
     )
 }
 
 const Footer = () => {
+    return (
+        <footer className="footer">
+            <Order />
+        </footer >
+    )
+}
+
+const Pizza = ({ num }) => {
+    const pizza = pizzaData[num]
+    //For Display
+    const soldOut = pizza.soldOut ? "Sold Out" : +pizza.price
+    //For Classname
+    const sold = pizza.soldOut ? "sold-out" : "";
+    return (
+        <div className={`pizza ${sold}`}>
+            <img src={pizza.photoName} alt={pizza.name} />
+            <div>
+                <h3>{pizza.name}</h3>
+                <p>Made with: {pizza.ingredients}</p>
+                <span>Price: {soldOut}</span>
+            </div>
+        </div>
+    )
+}
+
+const Order = () => {
     const currentHour = new Date().getHours()
     console.log(currentHour)
     const hours = {
@@ -54,40 +81,21 @@ const Footer = () => {
     const open = (currentHour >= hours.open && currentHour <= hours.close)
 
     return (
-        <footer className="footer">
+        <div className="order">
+            {new Date().toLocaleTimeString()}
+            <br />
             {open ? (
-                <div className="order">
-                    {new Date().toLocaleTimeString()}
-                    <br />
+                <>
                     <p>We are open until {hours.close}:00. Place an order below</p>
                     <button className="btn">Order</button>
-                </div>
+                </>
             ) : (
-                <div className="order">
-                    {new Date().toLocaleTimeString()}
-                    <br />
-                    <p>We are closed. We open orders at {hours.open}:00</p>
-                </div>
-            )
-            }
-        </footer>
-    )
-}
-
-const Pizza = (props) => {
-    const pizza = pizzaData[props.num]
-    return (
-        <div className="pizza">
-            <img src={pizza.photoName} alt={pizza.name} />
-            <div>
-                <h3>{pizza.name}</h3>
-                <p>Made with: {pizza.ingredients}</p>
-                <span>Price: {+pizza.price + 3}</span>
-            </div>
+                <p>We are closed. We open orders at {hours.open}:00</p>
+            )}
         </div>
     )
-}
 
+}
 const root = ReactDom.createRoot(document.getElementById("root"));
 
 root.render(

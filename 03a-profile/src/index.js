@@ -37,7 +37,6 @@ const App = () => {
         <div className="card">
             <ProfileImg />
             <div className="data">
-                <Name />
                 <Info />
                 <div className="skill-list">
                     {skillList.map((_, i) => (
@@ -55,18 +54,15 @@ const ProfileImg = () => {
     )
 }
 
-const Name = () => {
-    return (
-        <h1>Albert Wang</h1>
-    )
-}
-
 const Info = () => {
     return (
-        <body>I am currently trying my best to find a job as a software engineer.
-            In my free time, I like to spend so many hours dabbing and watching anime all day.
-            At night, I watch anime and dab for many hours all night.
-        </body>
+        <>
+            <h1>Albert Wang</h1>
+            <body>I am currently trying my best to find a job as a software engineer.
+                In my free time, I like to spend so many hours coding and watching anime all day.
+                At night, I watch anime and code for many hours all night.
+            </body>
+        </>
     )
 }
 
