@@ -1,4 +1,4 @@
-const pizzaData = [
+export const pizzaData = [
   {
     name: "Focaccia",
     ingredients: "Bread with italian olive oil and rosemary",
@@ -42,3 +42,5 @@ const pizzaData = [
     soldOut: false,
   },
 ];
+
+
