@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { Ratings } from "./Ratings";
+import { useEscapeKey, useLocalStorageList, useMovieDetails, useTitleChange } from "./customHooks";
 
 const KEY = "2908227a"
 
@@ -72,7 +73,10 @@ export const SelectedMovie = ({ selectedId, setSelectedId, setWatched, watched }
                 found = true;
             }
         })
-        !found && setWatched((watched) => [...watched, movie])
+        if (!found) {
+            console.log("hit1")
+            setWatched((watched) => [...watched, movie])
+        }
     }
 
     const addToWatchList = () => {
@@ -88,26 +92,12 @@ export const SelectedMovie = ({ selectedId, setSelectedId, setWatched, watched }
         watchedMovie(newWatchedMovie);
         setSelectedId(null);
     }
-
-
-    useEffect(function () {
-        const getMovieDetails = async () => {
-            try {
-                const res = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`);
-                if (!res.ok) {
-                    throw new Error(`Fetching failed`)
-                }
-                const data = await res.json();
-                if (data.Response === "False") {
-                    throw new Error(`We cannot find the movie with ${selectedId}`)
-                }
-                setMovieDetail(data);
-            } catch (err) {
-                console.error(err)
-            }
-        }
-        getMovieDetails();
-    }, [selectedId])
+    //Custom hook to get selected movie details
+    useMovieDetails(KEY, selectedId, setMovieDetail)
+    //Custom hook for changing title of page
+    useTitleChange(selectedId, title);
+    //Custom hook for using escapeKey
+    useEscapeKey(setSelectedId)
 
     return <div className="details">
         <header>
@@ -172,7 +162,12 @@ export const WatchedList = ({ watched, setWatched }) => {
 
     const deleteWatchedMovie = (mov) => {
         setWatched((watched) => watched.filter((movie) => movie.imdbID !== mov.imdbID))
+        console.log("hit2")
     }
+
+    //Custom hook for local storage
+    useLocalStorageList(watched);
+
     return (
         <ul className="list">
             {watched.map((movie) => (

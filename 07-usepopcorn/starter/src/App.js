@@ -6,7 +6,12 @@ import { tempMovieData } from "./parts/Data";
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
 
-  const [watched, setWatched] = useState([]);
+  const [watched, setWatched] = useState(
+    function () {
+      const storedValue = localStorage.getItem("watched");
+      return storedValue ? JSON.parse(storedValue) : [];
+    }
+  );
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -14,6 +19,7 @@ export default function App() {
   const Loader = () => {
     return <p className="loader">Loading...</p>
   }
+
 
   return (
     <>
@@ -37,8 +43,6 @@ export default function App() {
               </>
           }
         </Box>
-        {/* <Ratings /> */}
-
       </Main>
     </>
   );
